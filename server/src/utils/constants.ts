@@ -14,3 +14,7 @@ export const driversLinks = years.map(
   (year) => `${resultsUrl}/${year}/drivers.html`
 );
 export const teamLinks = years.map((year) => `${resultsUrl}/${year}/team.html`);
+
+export const racesOutput = "races.ts";
+export const driversOutput = "drivers.ts";
+export const teamsOutput = "teams.ts";

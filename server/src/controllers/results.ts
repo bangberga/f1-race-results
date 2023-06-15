@@ -1,18 +1,10 @@
 import { RequestHandler } from "express";
-import { driversLinks, racesLinks, teamLinks, years } from "../utils/constants";
-import { scrapInformation, fetchHTML } from "../crawl";
+import { driversOutput, racesOutput, teamsOutput } from "../utils/constants";
+import { getData } from "../utils/helper";
 
 const getAllRaces: RequestHandler = async (req, res) => {
   try {
-    const htmlBodies = await Promise.all(
-      racesLinks.map((link) => fetchHTML(link))
-    );
-    res.json(
-      htmlBodies.map((htmlBody, i) => ({
-        year: years[i],
-        data: scrapInformation(htmlBody),
-      }))
-    );
+    res.json(await getData(racesOutput));
   } catch (error) {
     console.log(error);
   }
@@ -20,15 +12,7 @@ const getAllRaces: RequestHandler = async (req, res) => {
 
 const getAllDrivers: RequestHandler = async (req, res) => {
   try {
-    const htmlBodies = await Promise.all(
-      driversLinks.map((link) => fetchHTML(link))
-    );
-    res.json(
-      htmlBodies.map((htmlBody, i) => ({
-        year: years[i],
-        data: scrapInformation(htmlBody),
-      }))
-    );
+    res.json(await getData(driversOutput));
   } catch (error) {
     console.log(error);
   }
@@ -36,15 +20,7 @@ const getAllDrivers: RequestHandler = async (req, res) => {
 
 const getAllTeams: RequestHandler = async (req, res) => {
   try {
-    const htmlBodies = await Promise.all(
-      teamLinks.map((link) => fetchHTML(link))
-    );
-    res.json(
-      htmlBodies.map((htmlBody, i) => ({
-        year: years[i],
-        data: scrapInformation(htmlBody),
-      }))
-    );
+    res.json(await getData(teamsOutput));
   } catch (error) {
     console.log(error);
   }
