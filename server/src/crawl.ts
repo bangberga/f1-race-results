@@ -1,14 +1,5 @@
 import { JSDOM } from "jsdom";
 
-function normalizeUrl(url: string): string {
-  const urlObj = new URL(url);
-  const hostPath = `${urlObj.hostname}${urlObj.pathname}`;
-  if (hostPath.length > 0 && hostPath.slice(-1) === "/") {
-    return hostPath.slice(0, -1);
-  }
-  return hostPath;
-}
-
 function getURLsFromHTML(htmlBody: string, baseURL: string): string[] {
   const urls: string[] = [];
   const dom = new JSDOM(htmlBody);
@@ -67,17 +58,15 @@ function scrapInformation(htmlBody: string) {
 }
 
 async function fetchHTML(link: string): Promise<string> {
-  const response = await fetch(link);
-  const contentType = response.headers.get("content-type");
-  if (!contentType?.includes("text/html")) return "";
-  const htmlBody = await response.text();
-  return htmlBody;
+  try {
+    const response = await fetch(link);
+    const contentType = response.headers.get("content-type");
+    if (!contentType?.includes("text/html")) return "";
+    const htmlBody = await response.text();
+    return htmlBody;
+  } catch (error) {
+    return "";
+  }
 }
 
-export {
-  getURLsFromHTML,
-  normalizeUrl,
-  filterLinks,
-  scrapInformation,
-  fetchHTML,
-};
+export { getURLsFromHTML, filterLinks, scrapInformation, fetchHTML };

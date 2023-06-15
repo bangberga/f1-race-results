@@ -1,25 +1,53 @@
 import { RequestHandler } from "express";
-import { baseUrl, scrapedPageUrl, tempLink } from "../utils/constants";
-import {
-  filterLinks,
-  getURLsFromHTML,
-  scrapInformation,
-  fetchHTML,
-} from "../crawl";
+import { driversLinks, racesLinks, teamLinks, years } from "../utils/constants";
+import { scrapInformation, fetchHTML } from "../crawl";
 
-const getAllResults: RequestHandler = async (req, res) => {
+const getAllRaces: RequestHandler = async (req, res) => {
   try {
-    const htmlBody = await fetchHTML(scrapedPageUrl);
-    const nextURLs = getURLsFromHTML(htmlBody, baseUrl);
-    const filteredLinks = filterLinks(nextURLs, tempLink);
-
     const htmlBodies = await Promise.all(
-      filteredLinks.map((link) => fetchHTML(link))
+      racesLinks.map((link) => fetchHTML(link))
     );
-
-    res.json(htmlBodies.map((htmlBody) => scrapInformation(htmlBody)));
+    res.json(
+      htmlBodies.map((htmlBody, i) => ({
+        year: years[i],
+        data: scrapInformation(htmlBody),
+      }))
+    );
   } catch (error) {
     console.log(error);
   }
 };
-export { getAllResults };
+
+const getAllDrivers: RequestHandler = async (req, res) => {
+  try {
+    const htmlBodies = await Promise.all(
+      driversLinks.map((link) => fetchHTML(link))
+    );
+    res.json(
+      htmlBodies.map((htmlBody, i) => ({
+        year: years[i],
+        data: scrapInformation(htmlBody),
+      }))
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllTeams: RequestHandler = async (req, res) => {
+  try {
+    const htmlBodies = await Promise.all(
+      teamLinks.map((link) => fetchHTML(link))
+    );
+    res.json(
+      htmlBodies.map((htmlBody, i) => ({
+        year: years[i],
+        data: scrapInformation(htmlBody),
+      }))
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getAllRaces, getAllDrivers, getAllTeams };

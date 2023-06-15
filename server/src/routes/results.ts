@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { getAllResults } from "../controllers/results";
+import {
+  getAllDrivers,
+  getAllRaces,
+  getAllTeams,
+} from "../controllers/results";
 
 const router = Router();
 
-router.route("/").get(getAllResults);
+router.route("/races").get(getAllRaces);
+router.route("/drivers").get(getAllDrivers);
+router.route("/team").get(getAllTeams);
 
 export default router;
