@@ -18,3 +18,7 @@ export function instancesOfTeams(data: unknown): data is Teams {
   if (!data || typeof data !== "object") return false;
   return "year" in data && "data" in data;
 }
+
+export function isArrTeam(data: any[]): data is Team[] {
+  return data.every((d) => instancesOfTeam(d));
+}

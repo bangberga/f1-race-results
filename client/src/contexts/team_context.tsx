@@ -43,7 +43,6 @@ export default function TeamsProvider(props: TeamsProviderProps) {
       if (Array.isArray(data)) {
         data.forEach((d) => instancesOfTeams(d) && teams.push(d));
       }
-      console.log(data);
       dispatch({ type: LOADING_TEAMS_SUCCESS, payload: teams });
     } catch (error) {
       dispatch({ type: LOADING_TEAMS_FAIL });

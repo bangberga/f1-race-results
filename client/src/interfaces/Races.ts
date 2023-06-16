@@ -28,3 +28,7 @@ export function instancesOfRaces(data: unknown): data is Races {
   if (!data || typeof data !== "object") return false;
   return "year" in data && "data" in data;
 }
+
+export function isArrRace(data: any[]): data is Race[] {
+  return data.every((d) => instancesOfRace(d));
+}

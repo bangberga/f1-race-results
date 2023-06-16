@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { links } from "../utils/constants";
 import styled from "styled-components";
 
@@ -9,7 +9,12 @@ export default function Navbar() {
       <ul>
         {links.map(({ text, id, url }) => (
           <li key={id}>
-            <Link to={url}>{text}</Link>
+            <NavLink
+              to={url}
+              className={({ isActive }) => `${isActive && "active"}`}
+            >
+              {text}
+            </NavLink>
           </li>
         ))}
       </ul>
@@ -40,6 +45,7 @@ const NavbarContainer = styled.nav`
         font-size: larger;
         text-transform: capitalize;
         transition: var(--transition);
+        &.active,
         &:hover {
           color: dodgerblue;
         }

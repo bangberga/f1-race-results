@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Filters from "../components/Filters";
+import BarChart from "../components/BarChart";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <main>
         <Filters />
         <Outlet />
+        <BarChart />
       </main>
     </HomeContainer>
   );

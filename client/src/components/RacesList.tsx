@@ -1,12 +1,15 @@
 import styled from "styled-components";
+import { VscGraph } from "react-icons/vsc";
 import Race from "../components/Race";
 import { useFiltersContext } from "../contexts/filters_context";
 import { useRacesContext } from "../contexts/races_context";
+import { useBarchartContext } from "../contexts/barchar_context";
 import Loading from "./Loading";
 
 export default function RacesList() {
   const { loading } = useRacesContext();
   const { filteredRaces } = useFiltersContext();
+  const { updateData, handleShow, handleTitle } = useBarchartContext();
 
   return (
     <RacesListContainer>
@@ -21,7 +24,19 @@ export default function RacesList() {
             const { year, data } = race;
             return (
               <div key={i} className="list-section">
-                <h4>{year}</h4>
+                <header className="list-header">
+                  <h4>{year}</h4>
+                  <button
+                    onClick={() => {
+                      updateData(data);
+                      handleTitle("x", "Laps");
+                      handleTitle("y", "Grand Prix");
+                      handleShow(true);
+                    }}
+                  >
+                    <VscGraph />
+                  </button>
+                </header>
                 <hr />
                 {data.length === 0 && <p className="no-data">No data</p>}
                 <div className="list-container">
@@ -39,22 +54,4 @@ export default function RacesList() {
   );
 }
 
-const RacesListContainer = styled.div`
-  .races-section {
-    margin: 1rem 0;
-    .no-data {
-      color: var(--clr-grey-3);
-      font-weight: lighter;
-      font-style: italic;
-    }
-    .races-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      column-gap: 2rem;
-      row-gap: 1rem;
-    }
-    hr {
-      margin: 1rem 0;
-    }
-  }
-`;
+const RacesListContainer = styled.div``;

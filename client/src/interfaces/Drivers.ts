@@ -1,3 +1,5 @@
+import Driver from "../components/Driver";
+
 export default interface Drivers {
   year: number;
   data: Driver[];
@@ -25,4 +27,8 @@ export function instancesOfDriver(data: unknown): data is Driver {
 export function instancesOfDrivers(data: unknown): data is Drivers {
   if (!data || typeof data !== "object") return false;
   return "year" in data && "data" in data;
+}
+
+export function isArrDriver(data: any[]): data is Driver[] {
+  return data.every((d) => instancesOfDriver(d));
 }

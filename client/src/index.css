@@ -117,3 +117,18 @@ p {
 .list-section hr {
   margin: 1rem 0;
 }
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.list-header button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+}
+.list-header button:hover {
+  color: dodgerblue;
+}
