@@ -23,8 +23,8 @@ export default function DriversList() {
           {filteredDrivers.map((driver, i) => {
             const { year, data } = driver;
             return (
-              <div key={i} className="list-header">
-                <header>
+              <div key={i} className="list-section">
+                <header className="list-header">
                   <h4>{year}</h4>
                   <button
                     onClick={() => {

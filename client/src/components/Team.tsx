@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Team } from "../interfaces/Teams";
+import { Team as ITeam } from "../interfaces/Teams";
 
 interface TeamProps {
-  team: Team;
+  team: ITeam;
 }
 
-export default function (props: TeamProps) {
+export default function Team(props: TeamProps) {
   const {
     team: { Team, PTS, Pos },
   } = props;

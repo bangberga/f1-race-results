@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Race } from "../interfaces/Races";
+import { Race as IRace } from "../interfaces/Races";
 
 interface RaceProps {
-  race: Race;
+  race: IRace;
 }
 
-export default function (props: RaceProps) {
+export default function Race(props: RaceProps) {
   const {
     race: { "Grand Prix": grandPrix, Date, Winner, Car, Laps, Time },
   } = props;
