@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Driver } from "../interfaces/Drivers";
+import { Driver as IDriver } from "../interfaces/Drivers";
 
 interface DriverProps {
-  driver: Driver;
+  driver: IDriver;
 }
 
-export default function (props: DriverProps) {
+export default function Driver(props: DriverProps) {
   const {
     driver: { Driver, Car, Nationality, PTS, Pos },
   } = props;
@@ -50,6 +50,6 @@ const RaceContainer = styled.article`
     justify-content: space-between;
   }
   hr {
-    margin: 0;
+    margin: 0 !important;
   }
 `;

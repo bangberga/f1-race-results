@@ -11,12 +11,12 @@ export default function BarChart() {
     height,
     margin: { left, top },
     show,
-    handleShow,
+    closeGraph,
   } = useBarchartContext();
 
   return (
     <BarchartContainer show={show ? 1 : 0}>
-      <button className="close" onClick={() => handleShow(false)}>
+      <button className="close" onClick={() => closeGraph()}>
         <TfiClose />
       </button>
       <svg width={width} height={height}>

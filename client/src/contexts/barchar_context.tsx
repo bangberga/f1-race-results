@@ -6,9 +6,9 @@ import {
   useReducer,
   useMemo,
 } from "react";
+import { ScaleBand, ScaleLinear, max, scaleBand, scaleLinear } from "d3";
 import reducer, { States, Title } from "../reducers/barchart_reducers";
 import { BARCHART_UPDATE_DATA, HANDLE_SHOW, HANDLE_TITLE } from "../actions";
-import { ScaleBand, ScaleLinear, max, scaleBand, scaleLinear } from "d3";
 import { isArrDriver } from "../interfaces/Drivers";
 import { isArrTeam } from "../interfaces/Teams";
 import { isArrRace } from "../interfaces/Races";
@@ -37,6 +37,8 @@ interface BarchartContextProps extends States {
   updateData: (data: any[]) => void;
   handleTitle: (name: keyof Title, value: Title[keyof Title]) => void;
   handleShow: (s: boolean) => void;
+  showGraph: (data: any[], x: string, y: string) => void;
+  closeGraph: () => void;
 }
 
 const BarchartContext = createContext<BarchartContextProps>(
@@ -106,6 +108,20 @@ export default function BarchartProvider(props: BarchartProviderProps) {
     dispatch({ type: HANDLE_SHOW, payload: s });
   }, []);
 
+  const showGraph = useCallback(
+    (data: any[], x: string, y: string) => {
+      updateData(data);
+      handleTitle("x", x);
+      handleTitle("y", y);
+      handleShow(true);
+    },
+    [updateData, handleTitle, handleShow]
+  );
+
+  const closeGraph = useCallback(() => {
+    handleShow(false);
+  }, [handleShow]);
+
   return (
     <BarchartContext.Provider
       value={{
@@ -117,6 +133,8 @@ export default function BarchartProvider(props: BarchartProviderProps) {
         updateData,
         handleTitle,
         handleShow,
+        showGraph,
+        closeGraph,
       }}
     >
       {children}
