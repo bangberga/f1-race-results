@@ -2,16 +2,13 @@ import { useFiltersContext } from "../contexts/filters_context";
 import ListContainer from "../components/ListContainer";
 
 export default function Drivers() {
-  const { filteredDrivers } = useFiltersContext();
+  const {
+    filteredData: { drivers },
+  } = useFiltersContext();
 
   return (
     <section>
-      <ListContainer
-        data={filteredDrivers}
-        title="Driver"
-        x="Points"
-        y="Drivers"
-      />
+      <ListContainer data={drivers} title="Driver" x="Points" y="Drivers" />
     </section>
   );
 }

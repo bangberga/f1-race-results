@@ -1,3 +1,4 @@
+import { styled } from "styled-components";
 import usePagnination from "../hooks/usePagination";
 import List from "./List";
 import PaginationButtons from "./PaginationButtons";
@@ -14,7 +15,7 @@ export default function ListContainer(props: ListContainerProps) {
   const { paginated, index, handlePageIndex } = usePagnination(data);
 
   return (
-    <div>
+    <Wrapper>
       <h1 className="title">{title}</h1>
       {paginated.length === 0 ? (
         <p>No drivers found</p>
@@ -33,6 +34,14 @@ export default function ListContainer(props: ListContainerProps) {
           })}
         </>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  .title {
+    font-style: italic;
+    letter-spacing: 0.5rem;
+    font-size: 4rem;
+  }
+`;

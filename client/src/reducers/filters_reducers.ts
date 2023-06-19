@@ -2,26 +2,20 @@ import {
   FILTER,
   UPDATE_FILTERS,
   UPDATE_SORT,
-  LOAD_RACES,
+  UPDATE_DATA,
   SORT,
-  LOAD_DRIVERS,
-  LOAD_TEAMS,
 } from "../actions";
 import Drivers from "../interfaces/Drivers";
 import Races from "../interfaces/Races";
 import Teams from "../interfaces/Teams";
 
-interface LOAD_RACES_ACTION {
-  type: typeof LOAD_RACES;
-  payload: Races[];
-}
-interface LOAD_DRIVERS_ACTION {
-  type: typeof LOAD_DRIVERS;
-  payload: Drivers[];
-}
-interface LOAD_TEAMS_ACTION {
-  type: typeof LOAD_TEAMS;
-  payload: Teams[];
+interface UPDATE_DATA_ACTION {
+  type: typeof UPDATE_DATA;
+  payload: {
+    races: Races[];
+    drivers: Drivers[];
+    teams: Teams[];
+  };
 }
 
 interface SORT_ACTION {
@@ -45,11 +39,9 @@ interface UPDATE_FILTERS_ACTION {
 export type Actions =
   | FILTER_ACTION
   | UPDATE_FILTERS_ACTION
-  | LOAD_RACES_ACTION
-  | LOAD_DRIVERS_ACTION
-  | LOAD_TEAMS_ACTION
   | SORT_ACTION
-  | UPDATE_SORT_ACTION;
+  | UPDATE_SORT_ACTION
+  | UPDATE_DATA_ACTION;
 
 export interface Filter {
   grandPrix: string;
@@ -63,63 +55,53 @@ export interface Sort {
 }
 
 export interface States {
-  allRaces: Races[];
-  filteredRaces: Races[];
-  allDrivers: Drivers[];
-  filteredDrivers: Drivers[];
-  allTeams: Teams[];
-  filteredTeams: Teams[];
+  allData: {
+    races: Races[];
+    drivers: Drivers[];
+    teams: Teams[];
+  };
+  filteredData: {
+    races: Races[];
+    drivers: Drivers[];
+    teams: Teams[];
+  };
   filter: Filter;
   sort: Sort;
 }
 
-const race_reducer = (state: States, action: Actions): States => {
-  if (action.type === LOAD_RACES) {
+const filter_reducer = (state: States, action: Actions): States => {
+  if (action.type === UPDATE_DATA) {
     return {
       ...state,
-      allRaces: [...action.payload],
-      filteredRaces: [...action.payload],
-    };
-  }
-  if (action.type === LOAD_DRIVERS) {
-    return {
-      ...state,
-      allDrivers: [...action.payload],
-      filteredDrivers: [...action.payload],
-    };
-  }
-  if (action.type === LOAD_TEAMS) {
-    return {
-      ...state,
-      allTeams: [...action.payload],
-      filteredTeams: [...action.payload],
+      allData: { ...action.payload },
+      filteredData: { ...action.payload },
     };
   }
   if (action.type === SORT) {
     const {
-      filteredRaces,
-      filteredDrivers,
-      filteredTeams,
+      filteredData: { races, drivers, teams },
       sort: { year },
     } = state;
     let tempRaces: Races[] = [];
     let tempDrivers: Drivers[] = [];
     let tempTeams: Teams[] = [];
     if (year === "asc") {
-      tempRaces = filteredRaces.sort((a, b) => a.year - b.year);
-      tempDrivers = filteredDrivers.sort((a, b) => a.year - b.year);
-      tempTeams = filteredTeams.sort((a, b) => a.year - b.year);
+      tempRaces = races.sort((a, b) => a.year - b.year);
+      tempDrivers = drivers.sort((a, b) => a.year - b.year);
+      tempTeams = teams.sort((a, b) => a.year - b.year);
     } else if (year === "desc") {
-      tempRaces = filteredRaces.sort((a, b) => b.year - a.year);
-      tempDrivers = filteredDrivers.sort((a, b) => b.year - a.year);
-      tempTeams = filteredTeams.sort((a, b) => b.year - a.year);
+      tempRaces = races.sort((a, b) => b.year - a.year);
+      tempDrivers = drivers.sort((a, b) => b.year - a.year);
+      tempTeams = teams.sort((a, b) => b.year - a.year);
     }
 
     return {
       ...state,
-      filteredRaces: tempRaces,
-      filteredDrivers: tempDrivers,
-      filteredTeams: tempTeams,
+      filteredData: {
+        races: tempRaces,
+        drivers: tempDrivers,
+        teams: tempTeams,
+      },
     };
   }
   if (action.type === UPDATE_SORT) {
@@ -134,13 +116,11 @@ const race_reducer = (state: States, action: Actions): States => {
   if (action.type === FILTER) {
     const {
       filter: { driver, grandPrix, team },
-      allRaces,
-      allDrivers,
-      allTeams,
+      allData: { races, drivers, teams },
     } = state;
-    let tempRaces = [...allRaces];
-    let tempDrivers = [...allDrivers];
-    let tempTeams = [...allTeams];
+    let tempRaces = [...races];
+    let tempDrivers = [...drivers];
+    let tempTeams = [...teams];
     if (driver) {
       tempRaces = tempRaces.map((races) => ({
         ...races,
@@ -173,12 +153,14 @@ const race_reducer = (state: States, action: Actions): States => {
     }
     return {
       ...state,
-      filteredRaces: tempRaces,
-      filteredDrivers: tempDrivers,
-      filteredTeams: tempTeams,
+      filteredData: {
+        races: tempRaces,
+        drivers: tempDrivers,
+        teams: tempTeams,
+      },
     };
   }
   return state;
 };
 
-export default race_reducer;
+export default filter_reducer;

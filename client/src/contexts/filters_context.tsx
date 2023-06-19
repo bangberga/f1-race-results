@@ -9,29 +9,29 @@ import {
 } from "react";
 import {
   FILTER,
-  LOAD_DRIVERS,
-  LOAD_RACES,
-  LOAD_TEAMS,
   SORT,
+  UPDATE_DATA,
   UPDATE_FILTERS,
   UPDATE_SORT,
 } from "../actions";
 import reducer, { Filter, Sort, States } from "../reducers/filters_reducers";
-import { useRacesContext } from "./races_context";
-import { useDriversContext } from "./driers_context";
-import { useTeamsContext } from "./team_context";
+import { useDataContext } from "./data_context";
 
 interface FiltersProviderProps {
   children: ReactNode | undefined;
 }
 
 const inititalStates: States = {
-  filteredRaces: [],
-  allRaces: [],
-  filteredDrivers: [],
-  allDrivers: [],
-  allTeams: [],
-  filteredTeams: [],
+  allData: {
+    drivers: [],
+    races: [],
+    teams: [],
+  },
+  filteredData: {
+    drivers: [],
+    races: [],
+    teams: [],
+  },
   sort: {
     year: "asc",
   },
@@ -54,22 +54,12 @@ const FiltersContext = createContext<FiltersContextProps>(
 
 export default function FiltersProvider(props: FiltersProviderProps) {
   const { children } = props;
-  const { races } = useRacesContext();
-  const { drivers } = useDriversContext();
-  const { teams } = useTeamsContext();
+  const { data } = useDataContext();
   const [state, dispatch] = useReducer(reducer, inititalStates);
 
   useEffect(() => {
-    dispatch({ type: LOAD_RACES, payload: races });
-  }, [races]);
-
-  useEffect(() => {
-    dispatch({ type: LOAD_DRIVERS, payload: drivers });
-  }, [drivers]);
-
-  useEffect(() => {
-    dispatch({ type: LOAD_TEAMS, payload: teams });
-  }, [teams]);
+    dispatch({ type: UPDATE_DATA, payload: data });
+  }, [data]);
 
   useEffect(() => {
     dispatch({ type: FILTER });
